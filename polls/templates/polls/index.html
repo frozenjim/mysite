@@ -1,9 +1,23 @@
 {% if latest_question_list %}
     <ul>
     {%  for question in latest_question_list %}
-        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+        <li>
+            <a href="{% url 'detail' question.id %}">{{ question.question_text }}</a>
+            {% comment %}
+            This took me a few minutes to fully understand.
+            What we're actually doing here is RECREATING the URL by
+                filling in the question_id variable with the question.id
+                of the currently iteration of question.
+            We're actually GENERATING the URL again; treating it as a
+                FUNCTION, not CALLING it as a variable.
+            Pseudocode:  "generate url called 'detail' passing the current
+                question.id as the parameter 'question_id'.
+            Returns: '/polls/1' (or whatever current question.id is)
+            {% endcomment %}
+        </li>
     {%  endfor %}
     </ul>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+
